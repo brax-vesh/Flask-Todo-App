@@ -19,11 +19,26 @@
             />
 
             <!--buttons-->
-            <div class="mt-4">
-                <button class="btn btn-primary mx-2">Login</button>
-                <button class="btn btn-secondary mx-2">Sign Up</button>
+                <div class="mt-4">
+                    <a href="/login">
+                        <button class="btn btn-primary mx-2">Login</button>
+                    </a>
+                    <a href="/signup">
+                        <button class="btn btn-secondary mx-2">Sign Up</button>
+                    </a>
+                </div>
             </div>
         </div>
+
+        <script>
+            // Handle button clicks
+            document.querySelector('.btn-primary').addEventListener('click', function() {
+                window.location.href = '/login';
+            });
+
+            document.querySelector('.btn-secondary').addEventListener('click', function() {
+                window.location.href = '/signup';
+            });
+        </script>
     </body>
 </html>
-
