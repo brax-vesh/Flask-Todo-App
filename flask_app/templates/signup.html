@@ -1,20 +1,50 @@
 <!-- FILEPATH: /Users/braxtonvescio/Desktop/Year 12/SEN/Flask Todo App/flask_app/templates/signup.html -->
+<!-- BEGIN: ed8c6549bwf9 -->
 
 <!DOCTYPE html>
 <html>
 <head>
     <title>Sign Up</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .form-control::placeholder {
+            color: #999;
+        }
+        
+        .form-control:focus::placeholder {
+            color: transparent;
+        }
+    </style>
 </head>
 <body>
-    <h1>Sign Up</h1>
-    <form>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br><br>
-        
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
-        
-        <input type="submit" value="Sign Up">
-    </form>
+    <div class="container">
+        <h1>Sign Up</h1>
+        <form>
+            <div class="form-group">
+                <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+            </div>
+            
+            <input type="submit" class="btn btn-primary" value="Sign Up">
+        </form>
+    </div>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
-</html>
+<!-- END: ed8c6549bwf9 -->

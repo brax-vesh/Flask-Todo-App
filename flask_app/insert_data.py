@@ -21,3 +21,4 @@ session.add(task1)
 session.add(task2)
 session.commit()
 print("Users and tasks inserted successfully.")
+
