@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Dashboard</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    </head>
+    <body>
+        <div class="container mt-5">
+            <h1>Your To-Do List</h1>
+            <ul class="list-group">
+                {% for todo in todos %}
+                <li class="list-group-item">
+                    {{ todo.task }}
+                    {% if todo.done %}
+                    <span class="badge badge-success">Done</span>
+                    {% else %}
+                    <span class="badge badge-warning">Pending</span>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+            <a href="{{ url_for('logout') }}" class="btn btn-danger mt3">Logout</a>
+        </div>
+    </body>
+</html>
