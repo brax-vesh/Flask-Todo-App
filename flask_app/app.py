@@ -59,6 +59,69 @@ def logout():
     flash("You have been logged out.", "info")
     return redirect('/')
 
+@app.route('/add_todo', methods=["POST"])
+def add_todo():
+    # Ensure the user is logged in
+    if "user_id" not in session:
+        flash("Please log in to add a to-do.", "warning")
+        return redirect('/login')
+    
+    # Retrieve task data from the form
+    task = request.form.get("task")
+    user_id = session["user_id"]
+    
+    # Create a new ToDo object and save it to the database
+    new_todo = ToDo(task=task, user_id=user_id)
+    db_session.add(new_todo)
+    db_session.commit()
+    
+    flash("To-Do added successfully!", "success")
+    return redirect('/dashboard')
+
+@app.route('/update_todo/<int:todo_id>', methods=["POST"])
+def update_todo(todo_id):
+    # Ensure the user is logged in
+    if "user_id" not in session:
+        flash("Please log in to update a to-do.", "warning")
+        return redirect('/login')
+    
+    # Retrieve the new task name from the form
+    new_task = request.form.get("new_task")
+    
+    # Query the database for the to-do
+    todo = db_session.query(ToDo).get(todo_id)
+    
+    # Ensure the to-do exists and belongs to the logged-in user
+    if todo and todo.user_id == session["user_id"]:
+        # Update the task name
+        todo.task = new_task
+        db_session.commit()
+        flash("To-Do updated successfully!", "success")
+    else:
+        flash("To-Do not found or access denied.", "danger")
+    
+    return redirect('/dashboard')
+    
+
+@app.route('/delete_todo/<int:todo_id>', methods=["POST"])
+def delete_todo(todo_id):
+    # Ensure the user is logged in
+    if "user_id" not in session:
+        flash("Please log in to delete a to-do.", "warning")
+        return redirect('/login')
+    
+    # Query the database for the to-do and delete it
+    todo = db_session.query(ToDo).get(todo_id)
+    
+    # Ensure the to-do exists and belongs to the logged-in user
+    if todo and todo.user_id == session["user_id"]:
+        db_session.delete(todo)
+        db_session.commit()
+        flash("To-Do deleted successfully!", "success")
+    else:
+        flash("To-Do not found or access denied.", "danger")
+    
+    return redirect('/dashboard')
 
 if __name__ == '__main__':
     app.run(debug=True)

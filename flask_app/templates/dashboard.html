@@ -1,27 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Dashboard</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
-    </head>
-    <body>
-        <div class="container mt-5">
-            <h1>Your To-Do List</h1>
-            <ul class="list-group">
-                {% for todo in todos %}
-                <li class="list-group-item">
-                    {{ todo.task }}
-                    {% if todo.done %}
-                    <span class="badge badge-success">Done</span>
-                    {% else %}
-                    <span class="badge badge-warning">Pending</span>
-                    {% endif %}
-                </li>
-                {% endfor %}
-            </ul>
-            <a href="{{ url_for('logout') }}" class="btn btn-danger mt3">Logout</a>
-        </div>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Your To-Do List</h1>
+        <!-- Form to Add a New To-Do -->
+        <form action="{{ url_for('add_todo') }}" method="POST" class="mb4">
+            <div class="input-group">
+                <input type="text" name="task" placeholder="New To-Do" class="form-control" required>
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </div>
+        </form>
+        <!-- Display To-Do List -->
+        <ul class="list-group">
+            {% for todo in todos %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{ todo.task }}
+                <div>
+                    <form action="{{ url_for('delete_todo', todo_id=todo.id) }}" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                    <form action="{{ url_for('update_todo', todo_id=todo.id) }}" method="POST" style="display: inline;">
+                        <input type="text" name="new_task" placeholder="New Task" class="form-control" required>
+                        <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        <a href="{{ url_for('logout') }}" class="btn btn-danger mt-3">Logout</a>
+    </div>
+</body>
 </html>
