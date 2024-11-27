@@ -3,39 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Student Hub</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --background-color: #f8f9fa;
+        }
+
+        body {
+            background-color: var(--background-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .hub-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        .hub-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+        }
+
+        .hub-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .hub-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .hub-card-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 1.5rem;
+            font-size: 1.25rem;
+        }
+
+        .hub-card-body {
+            padding: 1.5rem;
+            color: #666;
+        }
+
+        .hub-card-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .hub-card-link:hover {
+            text-decoration: none;
+        }
+
+        .logout-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 0.5rem 1.5rem;
+            background-color: #dc3545;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: #c82333;
+            text-decoration: none;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h1>Your To-Do List</h1>
-        <!-- Form to Add a New To-Do -->
-        <form action="{{ url_for('add_todo') }}" method="POST" class="mb4">
-            <div class="input-group">
-                <input type="text" name="task" placeholder="New To-Do" class="form-control" required>
-                <div class="input-group-append">
-                    <button type="submit" class="btn btn-primary">Add</button>
-                </div>
+    <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+    
+    <div class="hub-container">
+        <div class="hub-header">
+            <h1>Student Organization Hub</h1>
+            <p class="lead">Manage your academic and personal commitments in one place</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <a href="{{ url_for('assessments') }}" class="hub-card-link">
+                    <div class="hub-card">
+                        <div class="hub-card-header">
+                            Assessments
+                        </div>
+                        <div class="hub-card-body">
+                            Track your upcoming assignments, tests, and examinations.
+                        </div>
+                    </div>
+                </a>
             </div>
-        </form>
-        <!-- Display To-Do List -->
-        <ul class="list-group">
-            {% for todo in todos %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                {{ todo.task }}
-                <div>
-                    <form action="{{ url_for('delete_todo', todo_id=todo.id) }}" method="POST" style="display: inline;">
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form>
-                    <form action="{{ url_for('update_todo', todo_id=todo.id) }}" method="POST" style="display: inline;">
-                        <input type="text" name="new_task" placeholder="New Task" class="form-control" required>
-                        <button type="submit" class="btn btn-primary btn-sm">Update</button>
-                    </form>
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
-        <a href="{{ url_for('logout') }}" class="btn btn-danger mt-3">Logout</a>
+
+            <div class="col-md-6">
+                <a href="{{ url_for('study_sessions') }}" class="hub-card-link">
+                    <div class="hub-card">
+                        <div class="hub-card-header">
+                            Study Sessions
+                        </div>
+                        <div class="hub-card-body">
+                            Plan and organize your study schedule and revision tasks.
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-6">
+                <a href="{{ url_for('co_curricular') }}" class="hub-card-link">
+                    <div class="hub-card">
+                        <div class="hub-card-header">
+                            Co-Curricular Activities
+                        </div>
+                        <div class="hub-card-body">
+                            Manage your sports, clubs, and extra-curricular commitments.
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-6">
+                <a href="{{ url_for('personal_commitments') }}" class="hub-card-link">
+                    <div class="hub-card">
+                        <div class="hub-card-header">
+                            Personal Commitments
+                        </div>
+                        <div class="hub-card-body">
+                            Keep track of personal tasks and appointments.
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-6">
+                <a href="{{ url_for('todos') }}" class="hub-card-link">
+                    <div class="hub-card">
+                        <div class="hub-card-header">
+                            Todo List
+                        </div>
+                        <div class="hub-card-body">
+                            Manage your daily tasks and to-do items.
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
     </div>
 </body>
 </html>

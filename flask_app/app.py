@@ -1,7 +1,8 @@
 from flask import Flask, render_template, session, flash, redirect, request
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from setup_db import User, ToDo
+# Update imports to include new models
+from setup_db import User, ToDo, Assessment, StudySession, CoCurricular, PersonalCommitment
 from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__)
@@ -49,8 +50,33 @@ def login():
             print("Invalid username or password", "danger")
     return render_template('login.html')
 
-@app.route('/signup')
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirm_password')
+
+        # Check if username already exists
+        existing_user = db_session.query(User).filter_by(username=username).first()
+        if (existing_user):
+            flash('Username already exists', 'danger')
+            return redirect('/signup')
+
+        # Validate password match
+        if password != confirm_password:
+            flash('Passwords do not match', 'danger')
+            return redirect('/signup')
+
+        # Create new user
+        hashed_password = generate_password_hash(password)
+        new_user = User(username=username, password=hashed_password)
+        db_session.add(new_user)
+        db_session.commit()
+
+        flash('Account created successfully! Please login.', 'success')
+        return redirect('/login')
+
     return render_template('signup.html')
 
 @app.route('/logout')
@@ -122,6 +148,56 @@ def delete_todo(todo_id):
         flash("To-Do not found or access denied.", "danger")
     
     return redirect('/dashboard')
+
+@app.route('/assessments')
+def assessments():
+    if "user_id" not in session:
+        flash("Please log in to view assessments.", "warning")
+        return redirect('/login')
+    
+    user_id = session["user_id"]
+    user_assessments = db_session.query(Assessment).filter_by(user_id=user_id).all()
+    return render_template('assessments.html', assessments=user_assessments)
+
+@app.route('/study_sessions')
+def study_sessions():
+    if "user_id" not in session:
+        flash("Please log in to view study sessions.", "warning")
+        return redirect('/login')
+    
+    user_id = session["user_id"]
+    user_sessions = db_session.query(StudySession).filter_by(user_id=user_id).all()
+    return render_template('study_sessions.html', sessions=user_sessions)
+
+@app.route('/co_curricular')
+def co_curricular():
+    if "user_id" not in session:
+        flash("Please log in to view co-curricular activities.", "warning")
+        return redirect('/login')
+    
+    user_id = session["user_id"]
+    activities = db_session.query(CoCurricular).filter_by(user_id=user_id).all()
+    return render_template('co_curricular.html', activities=activities)
+
+@app.route('/personal_commitments')
+def personal_commitments():
+    if "user_id" not in session:
+        flash("Please log in to view personal commitments.", "warning")
+        return redirect('/login')
+    
+    user_id = session["user_id"]
+    commitments = db_session.query(PersonalCommitment).filter_by(user_id=user_id).all()
+    return render_template('personal_commitments.html', commitments=commitments)
+
+@app.route('/todos')
+def todos():
+    if "user_id" not in session:
+        flash("Please log in to view todos.", "warning")
+        return redirect('/login')
+    
+    user_id = session["user_id"]
+    user_todos = db_session.query(ToDo).filter_by(user_id=user_id).all()
+    return render_template('add_todo.html', todos=user_todos)
 
 if __name__ == '__main__':
     app.run(debug=True)
