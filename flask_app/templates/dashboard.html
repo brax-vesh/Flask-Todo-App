@@ -145,17 +145,34 @@
                 </a>
             </div>
 
-            <div class="col-md-6">
-                <a href="{{ url_for('todos') }}" class="hub-card-link">
-                    <div class="hub-card">
-                        <div class="hub-card-header">
-                            Todo List
+            <div class="col-12 d-flex justify-content-center">
+                <div class="col-md-6">
+                    <a href="{{ url_for('todos') }}" class="hub-card-link">
+                        <div class="hub-card">
+                            <div class="hub-card-header">
+                                Add Todo
+                            </div>
+                            <div class="hub-card-body">
+                                Manage your daily tasks and to-do items.
+                            </div>
                         </div>
-                        <div class="hub-card-body">
-                            Manage your daily tasks and to-do items.
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-12 d-flex justify-content-center">
+                <div class="col-md-6">
+                    <a href="{{ url_for('all_todos') }}" class="hub-card-link">
+                        <div class="hub-card">
+                            <div class="hub-card-header">
+                                All Tasks
+                            </div>
+                            <div class="hub-card-body">
+                                View and manage all your tasks in one place.
+                            </div>
                         </div>
-                    </div>
-                </a>
+                    </a>
+                </div>
             </div>
         </div>
     </div>

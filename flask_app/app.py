@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, flash, redirect, request
+from flask import Flask, render_template, session, flash, redirect, request, url_for
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 # Update imports to include new models
@@ -85,24 +85,25 @@ def logout():
     flash("You have been logged out.", "info")
     return redirect('/')
 
-@app.route('/add_todo', methods=["POST"])
+@app.route('/add_todo', methods=["GET", "POST"])
 def add_todo():
-    # Ensure the user is logged in
     if "user_id" not in session:
         flash("Please log in to add a to-do.", "warning")
         return redirect('/login')
     
-    # Retrieve task data from the form
-    task = request.form.get("task")
-    user_id = session["user_id"]
+    if request.method == "POST":
+        task = request.form.get("task")
+        category = request.form.get("category")
+        user_id = session["user_id"]
+        
+        new_todo = ToDo(task=task, category=category, user_id=user_id)
+        db_session.add(new_todo)
+        db_session.commit()
+        
+        flash("To-Do added successfully!", "success")
+        return redirect(url_for(category.lower().replace('-', '_').replace(' ', '_')))
     
-    # Create a new ToDo object and save it to the database
-    new_todo = ToDo(task=task, user_id=user_id)
-    db_session.add(new_todo)
-    db_session.commit()
-    
-    flash("To-Do added successfully!", "success")
-    return redirect('/dashboard')
+    return render_template('add_todo.html')
 
 @app.route('/update_todo/<int:todo_id>', methods=["POST"])
 def update_todo(todo_id):
@@ -149,45 +150,50 @@ def delete_todo(todo_id):
     
     return redirect('/dashboard')
 
-@app.route('/assessments')
-def assessments():
+@app.route('/toggle_todo/<int:todo_id>', methods=["POST"])
+def toggle_todo(todo_id):
     if "user_id" not in session:
-        flash("Please log in to view assessments.", "warning")
+        flash("Please log in to update a to-do.", "warning")
         return redirect('/login')
     
-    user_id = session["user_id"]
-    user_assessments = db_session.query(Assessment).filter_by(user_id=user_id).all()
-    return render_template('assessments.html', assessments=user_assessments)
+    todo = db_session.query(ToDo).get(todo_id)
+    
+    if todo and todo.user_id == session["user_id"]:
+        todo.completed = not todo.completed
+        db_session.commit()
+        flash("To-Do status updated successfully!", "success")
+    else:
+        flash("To-Do not found or access denied.", "danger")
+    
+    return redirect(request.referrer or '/dashboard')
+
+@app.route('/assessments')
+def assessments():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    todos = db_session.query(ToDo).filter_by(user_id=session['user_id'], category='Assessments').all()
+    return render_template('assessments.html', todos=todos)
 
 @app.route('/study_sessions')
 def study_sessions():
-    if "user_id" not in session:
-        flash("Please log in to view study sessions.", "warning")
-        return redirect('/login')
-    
-    user_id = session["user_id"]
-    user_sessions = db_session.query(StudySession).filter_by(user_id=user_id).all()
-    return render_template('study_sessions.html', sessions=user_sessions)
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    todos = db_session.query(ToDo).filter_by(user_id=session['user_id'], category='Study Sessions').all()
+    return render_template('study_sessions.html', todos=todos)
 
 @app.route('/co_curricular')
 def co_curricular():
-    if "user_id" not in session:
-        flash("Please log in to view co-curricular activities.", "warning")
-        return redirect('/login')
-    
-    user_id = session["user_id"]
-    activities = db_session.query(CoCurricular).filter_by(user_id=user_id).all()
-    return render_template('co_curricular.html', activities=activities)
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    todos = db_session.query(ToDo).filter_by(user_id=session['user_id'], category='Co-Curricular').all()
+    return render_template('co_curricular.html', todos=todos)
 
 @app.route('/personal_commitments')
 def personal_commitments():
-    if "user_id" not in session:
-        flash("Please log in to view personal commitments.", "warning")
-        return redirect('/login')
-    
-    user_id = session["user_id"]
-    commitments = db_session.query(PersonalCommitment).filter_by(user_id=user_id).all()
-    return render_template('personal_commitments.html', commitments=commitments)
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    todos = db_session.query(ToDo).filter_by(user_id=session['user_id'], category='Personal Commitments').all()
+    return render_template('personal_commitments.html', todos=todos)
 
 @app.route('/todos')
 def todos():
@@ -198,6 +204,16 @@ def todos():
     user_id = session["user_id"]
     user_todos = db_session.query(ToDo).filter_by(user_id=user_id).all()
     return render_template('add_todo.html', todos=user_todos)
+
+@app.route('/all_todos')
+def all_todos():
+    if "user_id" not in session:
+        flash("Please log in to view todos.", "warning")
+        return redirect('/login')
+    
+    user_id = session["user_id"]
+    todos = db_session.query(ToDo).filter_by(user_id=user_id).all()
+    return render_template('all_todos.html', todos=todos)
 
 if __name__ == '__main__':
     app.run(debug=True)
