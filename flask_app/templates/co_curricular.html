@@ -22,9 +22,12 @@
                             </form>
                             <span {% if todo.completed %}class="text-decoration-line-through"{% endif %}>{{ todo.task }}</span>
                         </div>
-                        <form action="{{ url_for('delete_todo', todo_id=todo.id) }}" method="POST" class="d-inline">
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                        </form>
+                        <div class="btn-group">
+                            <a href="{{ url_for('update_todo', todo_id=todo.id) }}" class="btn btn-sm btn-primary me-2">Update</a>
+                            <form action="{{ url_for('delete_todo', todo_id=todo.id) }}" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </div>
                     </li>
                     {% endfor %}
                 </ul>

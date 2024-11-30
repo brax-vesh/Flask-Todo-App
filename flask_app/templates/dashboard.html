@@ -81,6 +81,57 @@
             text-decoration: none;
             color: white;
         }
+
+        .todo-list {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0 0 0;
+        }
+
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid var(--secondary-color);
+            transition: background-color 0.2s ease;
+        }
+
+        .todo-item:hover {
+            background: #e9ecef;
+        }
+
+        .todo-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .todo-actions button {
+            padding: 0.25rem 0.5rem;
+            border: none;
+            border-radius: 3px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .todo-complete {
+            background: #28a745;
+            color: white;
+        }
+
+        .todo-delete {
+            background: #dc3545;
+            color: white;
+        }
+
+        .category-description {
+            margin-bottom: 1rem;
+            color: #666;
+        }
     </style>
 </head>
 <body>
