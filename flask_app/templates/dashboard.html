@@ -73,12 +73,13 @@
         }
 
         .btn-logout {
-            background: var(--danger);
+            background: crimson;
             color: white;
+            text-decoration: none;
         }
 
         .btn-logout:hover {
-            background: #c0392b;
+            background: #b01030;
         }
 
         .grid-container {
@@ -219,12 +220,13 @@
         }
 
         .btn-primary {
-            background: var(--primary);
+            background: #2E8B57;  /* Dark sea green */
             color: white;
+            text-decoration: none;
         }
 
         .btn-primary:hover {
-            background: #357abd;
+            background: #26734A;  /* Even darker shade for hover */
         }
 
         .empty-state {
@@ -281,11 +283,10 @@
     <div class="dashboard">
         <nav class="navbar">
             <div class="navbar-brand">
-                <i class="fas fa-graduation-cap"></i>
-                <span>Student Hub</span>
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" style="height: 40px;">
             </div>
             <div class="user-actions">
-                <span>Welcome, {{ session.get('username', 'Student') }}!</span>
+                <span style="color: #dc143c; font-weight: bold; font-style: italic;">WELCOME BELOVED USER!</span>
                 <a href="{{ url_for('logout') }}" class="btn btn-logout">
                     <i class="fas fa-sign-out-alt"></i>
                     Logout
