@@ -110,13 +110,29 @@
 
         .card-header {
             padding: 1.25rem;
-            background: linear-gradient(135deg, var(--primary) 0%, #357abd 100%);
             color: white;
             font-weight: 600;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        /* Category-specific header colors */
+        .card-header-assessments {
+            background: linear-gradient(135deg, #FF6B6B 0%, #ee5253 100%);
+        }
+
+        .card-header-study {
+            background: linear-gradient(135deg, #4834d4 0%, #686de0 100%);
+        }
+
+        .card-header-cocurricular {
+            background: linear-gradient(135deg, #20bf6b 0%, #26de81 100%);
+        }
+
+        .card-header-personal {
+            background: linear-gradient(135deg, #f7b731 0%, #fab1a0 100%);
         }
 
         .card-header span {
@@ -221,13 +237,31 @@
         }
 
         .btn-primary {
-            background: #2E8B57;  /* Dark sea green */
+            background: linear-gradient(135deg, #3CB371 0%, #2E8B57 100%);  /* Gradient from lighter to darker green */
             color: white;
             text-decoration: none;
+            position: relative;
+            overflow: hidden;
         }
 
         .btn-primary:hover {
-            background: #26734A;  /* Even darker shade for hover */
+            background: linear-gradient(135deg, #2E8B57 0%, #26734A 100%);  /* Darker gradient on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(46, 139, 87, 0.3);
+        }
+
+        /* Style for Add New Task button */
+        .btn-primary.add-task {
+            background: linear-gradient(135deg, #3CB371 0%, #2E8B57 100%);
+        }
+
+        /* Style for View All Tasks button */
+        .btn-primary.view-all {
+            background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+        }
+
+        .btn-primary.view-all:hover {
+            background: linear-gradient(135deg, #357ABD 0%, #2868A0 100%);
         }
 
         .empty-state {
@@ -295,11 +329,11 @@
         </nav>
 
         <div class="quick-actions">
-            <a href="{{ url_for('add_todo') }}" class="btn btn-primary">
+            <a href="{{ url_for('add_todo') }}" class="btn btn-primary add-task">
                 <i class="fas fa-plus"></i>
                 Add New Task
             </a>
-            <a href="{{ url_for('all_todos') }}" class="btn btn-primary">
+            <a href="{{ url_for('all_todos') }}" class="btn btn-primary view-all">
                 <i class="fas fa-list"></i>
                 View All Tasks
             </a>
@@ -308,7 +342,7 @@
         <div class="grid-container">
             <!-- Assessments Card -->
             <div class="card">
-                <div class="card-header">
+                <div class="card-header card-header-assessments">
                     <span><i class="fas fa-book-open"></i> Assessments</span>
                     <a href="{{ url_for('assessments') }}" class="btn">
                         <i class="fas fa-arrow-right"></i>
@@ -350,7 +384,7 @@
 
             <!-- Study Sessions Card -->
             <div class="card">
-                <div class="card-header">
+                <div class="card-header card-header-study">
                     <span><i class="fas fa-clock"></i> Study Sessions</span>
                     <a href="{{ url_for('study_sessions') }}" class="btn">
                         <i class="fas fa-arrow-right"></i>
@@ -392,7 +426,7 @@
 
             <!-- Co-Curricular Activities Card -->
             <div class="card">
-                <div class="card-header">
+                <div class="card-header card-header-cocurricular">
                     <span><i class="fas fa-running"></i> Co-Curricular Activities</span>
                     <a href="{{ url_for('co_curricular') }}" class="btn">
                         <i class="fas fa-arrow-right"></i>
@@ -434,7 +468,7 @@
 
             <!-- Personal Commitments Card -->
             <div class="card">
-                <div class="card-header">
+                <div class="card-header card-header-personal">
                     <span><i class="fas fa-user"></i> Personal Commitments</span>
                     <a href="{{ url_for('personal_commitments') }}" class="btn">
                         <i class="fas fa-arrow-right"></i>
