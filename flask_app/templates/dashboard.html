@@ -4,376 +4,480 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Hub</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --background-color: #f8f9fa;
+            --primary: #4a90e2;
+            --secondary: #f39c12;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
         }
 
         body {
-            background-color: var(--background-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
         }
 
-        .hub-container {
+        .dashboard {
             max-width: 1200px;
-            margin: 2rem auto;
+            margin: 0 auto;
             padding: 2rem;
         }
 
-        .hub-header {
-            text-align: center;
-            margin-bottom: 3rem;
-            color: var(--primary-color);
-        }
-
-        .hub-card {
+        .navbar {
             background: white;
+            padding: 1rem 2rem;
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 6px var(--shadow);
             margin-bottom: 2rem;
-            overflow: hidden;
-            height: 300px; /* Set fixed height for all cards */
-            display: flex;
-            flex-direction: column;
-        }
-
-        .hub-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .hub-card-header {
-            background: var(--primary-color);
-            color: white;
-            padding: 1.5rem;
-            font-size: 1.25rem;
-        }
-
-        .hub-card-body {
-            padding: 1.5rem;
-            color: #666;
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-            overflow: hidden; /* Prevent content from expanding card */
-        }
-
-        .hub-card-link {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .hub-card-link:hover {
-            text-decoration: none;
-        }
-
-        .logout-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 0.5rem 1.5rem;
-            background-color: #dc3545;
-            border: none;
-            border-radius: 5px;
-            color: white;
-            transition: background-color 0.3s ease;
-        }
-
-        .logout-btn:hover {
-            background-color: #c82333;
-            text-decoration: none;
-            color: white;
-        }
-
-        .todo-list {
-            list-style: none;
-            padding: 0;
-            margin: 1rem 0 0 0;
-        }
-
-        .todo-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.75rem;
-            margin-bottom: 0.5rem;
-            background: #f8f9fa;
-            border-radius: 5px;
-            border-left: 4px solid var(--secondary-color);
-            transition: background-color 0.2s ease;
         }
 
-        .todo-item:hover {
-            background: #e9ecef;
-        }
-
-        .todo-actions {
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--dark);
             display: flex;
+            align-items: center;
             gap: 0.5rem;
         }
 
-        .todo-actions button {
-            padding: 0.25rem 0.5rem;
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
             border: none;
-            border-radius: 3px;
-            font-size: 0.875rem;
             cursor: pointer;
-            transition: background-color 0.2s ease;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .todo-complete {
-            background: #28a745;
+        .btn-logout {
+            background: var(--danger);
             color: white;
         }
 
-        .todo-delete {
-            background: #dc3545;
+        .btn-logout:hover {
+            background: #c0392b;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Change to 2 columns */
+            gap: 1.5rem;
+            margin-top: 2rem;
+            max-width: 100%;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            padding: 1.25rem;
+            background: linear-gradient(135deg, var(--primary) 0%, #357abd 100%);
             color: white;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
 
-        .category-description {
-            margin-bottom: 1rem;
-            color: #666;
+        .card-header span {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.1rem;
         }
 
-        .todo-preview {
-            margin-top: 1rem;
-            flex: 1; /* Take remaining space */
-            overflow-y: auto;
-            border-top: 1px solid #eee;
-            padding-top: 0.5rem;
-        }
-
-        .todo-preview-item {
+        .card-header .btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
             padding: 0.5rem;
-            margin-bottom: 0.25rem;
-            background: #f8f9fa;
-            border-radius: 3px;
-            font-size: 0.9rem;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .todo-preview-item.completed {
+        .card-header .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(3px);
+        }
+
+        .card-body {
+            flex: 1;
+            padding: 1.25rem;
+            overflow-y: auto;
+            background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
+        }
+
+        .task-list {
+            list-style: none;
+        }
+
+        .task-item {
+            padding: 1rem;
+            border-radius: 8px;
+            background: white;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .task-item:hover {
+            background: #f8f9fa;
+            border-color: var(--primary);
+        }
+
+        .task-title {
+            font-weight: 500;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .task-title.completed {
             text-decoration: line-through;
             color: #888;
-            background: #e8f5e9;
         }
 
-        /* Scrollbar styling */
-        .todo-preview::-webkit-scrollbar {
+        .task-date {
+            font-size: 0.85rem;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .status {
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-overdue {
+            background: #ffecec;
+            color: var(--danger);
+        }
+
+        .status-today {
+            background: #fff3cd;
+            color: var(--secondary);
+        }
+
+        .status-upcoming {
+            background: #d4edda;
+            color: var(--success);
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #357abd;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .empty-state i {
+            font-size: 2.5rem;
+            color: #ccc;
+        }
+
+        .empty-state p {
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        /* Custom scrollbar */
+        .card-body::-webkit-scrollbar {
             width: 5px;
         }
 
-        .todo-preview::-webkit-scrollbar-track {
+        .card-body::-webkit-scrollbar-track {
             background: #f1f1f1;
         }
 
-        .todo-preview::-webkit-scrollbar-thumb {
-            background: var(--secondary-color);
-            border-radius: 3px;
+        .card-body::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 5px;
         }
 
-        /* For the Add Todo and All Tasks cards that don't need the full height */
-        .center-card {
-            height: 200px;
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .dashboard {
+                padding: 1rem;
+            }
+
+            .grid-container {
+                grid-template-columns: 1fr; /* Stack cards on mobile */
+            }
+
+            .card {
+                height: 350px; /* Slightly smaller on mobile */
+            }
         }
     </style>
 </head>
 <body>
-    <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
-    
-    <div class="hub-container">
-        <div class="hub-header">
-            <h1>Student Organization Hub</h1>
-            <p class="lead">Manage your academic and personal commitments in one place</p>
+    <div class="dashboard">
+        <nav class="navbar">
+            <div class="navbar-brand">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Student Hub</span>
+            </div>
+            <div class="user-actions">
+                <span>Welcome, {{ session.get('username', 'Student') }}!</span>
+                <a href="{{ url_for('logout') }}" class="btn btn-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </a>
+            </div>
+        </nav>
+
+        <div class="quick-actions">
+            <a href="{{ url_for('add_todo') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i>
+                Add New Task
+            </a>
+            <a href="{{ url_for('all_todos') }}" class="btn btn-primary">
+                <i class="fas fa-list"></i>
+                View All Tasks
+            </a>
         </div>
 
-        <div class="row">
-            <div class="col-md-6">
-                <a href="{{ url_for('assessments') }}" class="hub-card-link">
-                    <div class="hub-card">
-                        <div class="hub-card-header">
-                            Assessments
-                        </div>
-                        <div class="hub-card-body">
-                            <p>Track your upcoming assignments, tests, and examinations.</p>
-                            <div class="todo-preview">
-                                {% for todo in todos if todo.category == 'Assessments' %}
-                                    <div class="todo-preview-item {% if todo.completed %}completed{% endif %}">
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <div>
-                                                <span {% if todo.completed %}class="text-decoration-line-through"{% endif %}>
-                                                    {{ todo.task }}
-                                                </span>
-                                                {% if todo.due_date %}
-                                                    <br>
-                                                    <small class="text-muted">
-                                                        Due: {{ todo.due_date.strftime('%Y-%m-%d') }}
-                                                        {% set days = calculate_days(todo.due_date) %}
-                                                        {% if days %}
-                                                            • <span class="{% if days == 'Overdue' %}text-danger{% elif days == 'Due today' %}text-warning{% else %}text-info{% endif %}">
-                                                                {{ days }}
-                                                            </span>
-                                                        {% endif %}
-                                                    </small>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-md-6">
-                <a href="{{ url_for('study_sessions') }}" class="hub-card-link">
-                    <div class="hub-card">
-                        <div class="hub-card-header">
-                            Study Sessions
-                        </div>
-                        <div class="hub-card-body">
-                            <p>Plan and organize your study schedule and revision tasks.</p>
-                            <div class="todo-preview">
-                                {% for todo in todos if todo.category == 'Study Sessions' %}
-                                    <div class="todo-preview-item {% if todo.completed %}completed{% endif %}">
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <div>
-                                                <span {% if todo.completed %}class="text-decoration-line-through"{% endif %}>
-                                                    {{ todo.task }}
-                                                </span>
-                                                {% if todo.due_date %}
-                                                    <br>
-                                                    <small class="text-muted">
-                                                        Due: {{ todo.due_date.strftime('%Y-%m-%d') }}
-                                                        {% set days = calculate_days(todo.due_date) %}
-                                                        {% if days %}
-                                                            • <span class="{% if days == 'Overdue' %}text-danger{% elif days == 'Due today' %}text-warning{% else %}text-info{% endif %}">
-                                                                {{ days }}
-                                                            </span>
-                                                        {% endif %}
-                                                    </small>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-md-6">
-                <a href="{{ url_for('co_curricular') }}" class="hub-card-link">
-                    <div class="hub-card">
-                        <div class="hub-card-header">
-                            Co-Curricular Activities
-                        </div>
-                        <div class="hub-card-body">
-                            <p>Manage your sports, clubs, and extra-curricular commitments.</p>
-                            <div class="todo-preview">
-                                {% for todo in todos if todo.category == 'Co-Curricular Activities' %}
-                                    <div class="todo-preview-item {% if todo.completed %}completed{% endif %}">
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <div>
-                                                <span {% if todo.completed %}class="text-decoration-line-through"{% endif %}>
-                                                    {{ todo.task }}
-                                                </span>
-                                                {% if todo.due_date %}
-                                                    <br>
-                                                    <small class="text-muted">
-                                                        Due: {{ todo.due_date.strftime('%Y-%m-%d') }}
-                                                        {% set days = calculate_days(todo.due_date) %}
-                                                        {% if days %}
-                                                            • <span class="{% if days == 'Overdue' %}text-danger{% elif days == 'Due today' %}text-warning{% else %}text-info{% endif %}">
-                                                                {{ days }}
-                                                            </span>
-                                                        {% endif %}
-                                                    </small>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-md-6">
-                <a href="{{ url_for('personal_commitments') }}" class="hub-card-link">
-                    <div class="hub-card">
-                        <div class="hub-card-header">
-                            Personal Commitments
-                        </div>
-                        <div class="hub-card-body">
-                            <p>Keep track of personal tasks and appointments.</p>
-                            <div class="todo-preview">
-                                {% for todo in todos if todo.category == 'Personal Commitments' %}
-                                    <div class="todo-preview-item {% if todo.completed %}completed{% endif %}">
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <div>
-                                                <span {% if todo.completed %}class="text-decoration-line-through"{% endif %}>
-                                                    {{ todo.task }}
-                                                </span>
-                                                {% if todo.due_date %}
-                                                    <br>
-                                                    <small class="text-muted">
-                                                        Due: {{ todo.due_date.strftime('%Y-%m-%d') }}
-                                                        {% set days = calculate_days(todo.due_date) %}
-                                                        {% if days %}
-                                                            • <span class="{% if days == 'Overdue' %}text-danger{% elif days == 'Due today' %}text-warning{% else %}text-info{% endif %}">
-                                                                {{ days }}
-                                                            </span>
-                                                        {% endif %}
-                                                    </small>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-12 d-flex justify-content-center">
-                <div class="col-md-6">
-                    <a href="{{ url_for('todos') }}" class="hub-card-link">
-                        <div class="hub-card center-card">
-                            <div class="hub-card-header">
-                                Add Todo
-                            </div>
-                            <div class="hub-card-body">
-                                Manage your daily tasks and to-do items.
-                            </div>
-                        </div>
+        <div class="grid-container">
+            <!-- Assessments Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span><i class="fas fa-book-open"></i> Assessments</span>
+                    <a href="{{ url_for('assessments') }}" class="btn">
+                        <i class="fas fa-arrow-right"></i>
                     </a>
+                </div>
+                <div class="card-body">
+                    <div class="task-list">
+                        {% for todo in todos if todo.category == 'Assessments' %}
+                            <div class="task-item">
+                                <div>
+                                    <div class="task-title {% if todo.completed %}completed{% endif %}">
+                                        {{ todo.task }}
+                                    </div>
+                                    {% if todo.due_date %}
+                                        <div class="task-date">
+                                            {{ todo.due_date.strftime('%b %d, %Y') }}
+                                            {% set days = calculate_days(todo.due_date) %}
+                                            {% if days %}
+                                                <span class="status {% if days == 'Overdue' %}status-overdue{% elif days == 'Due today' %}status-today{% else %}status-upcoming{% endif %}">
+                                                    {{ days }}
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="empty-state">
+                                <i class="fas fa-clipboard-list"></i>
+                                <p>No assessments scheduled</p>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
 
-            <div class="col-12 d-flex justify-content-center">
-                <div class="col-md-6">
-                    <a href="{{ url_for('all_todos') }}" class="hub-card-link">
-                        <div class="hub-card center-card">
-                            <div class="hub-card-header">
-                                All Tasks
-                            </div>
-                            <div class="hub-card-body">
-                                View and manage all your tasks in one place.
-                            </div>
-                        </div>
+            <!-- Study Sessions Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span><i class="fas fa-clock"></i> Study Sessions</span>
+                    <a href="{{ url_for('study_sessions') }}" class="btn">
+                        <i class="fas fa-arrow-right"></i>
                     </a>
+                </div>
+                <div class="card-body">
+                    <div class="task-list">
+                        {% for todo in todos if todo.category == 'Study Sessions' %}
+                            <div class="task-item">
+                                <div>
+                                    <div class="task-title {% if todo.completed %}completed{% endif %}">
+                                        {{ todo.task }}
+                                    </div>
+                                    {% if todo.due_date %}
+                                        <div class="task-date">
+                                            {{ todo.due_date.strftime('%b %d, %Y') }}
+                                            {% set days = calculate_days(todo.due_date) %}
+                                            {% if days %}
+                                                <span class="status {% if days == 'Overdue' %}status-overdue{% elif days == 'Due today' %}status-today{% else %}status-upcoming{% endif %}">
+                                                    {{ days }}
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="empty-state">
+                                <i class="fas fa-clipboard-list"></i>
+                                <p>No study sessions scheduled</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Co-Curricular Activities Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span><i class="fas fa-running"></i> Co-Curricular Activities</span>
+                    <a href="{{ url_for('co_curricular') }}" class="btn">
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="task-list">
+                        {% for todo in todos if todo.category == 'Co-Curricular Activities' %}
+                            <div class="task-item">
+                                <div>
+                                    <div class="task-title {% if todo.completed %}completed{% endif %}">
+                                        {{ todo.task }}
+                                    </div>
+                                    {% if todo.due_date %}
+                                        <div class="task-date">
+                                            {{ todo.due_date.strftime('%b %d, %Y') }}
+                                            {% set days = calculate_days(todo.due_date) %}
+                                            {% if days %}
+                                                <span class="status {% if days == 'Overdue' %}status-overdue{% elif days == 'Due today' %}status-today{% else %}status-upcoming{% endif %}">
+                                                    {{ days }}
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="empty-state">
+                                <i class="fas fa-clipboard-list"></i>
+                                <p>No co-curricular activities scheduled</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Personal Commitments Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span><i class="fas fa-user"></i> Personal Commitments</span>
+                    <a href="{{ url_for('personal_commitments') }}" class="btn">
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="task-list">
+                        {% for todo in todos if todo.category == 'Personal Commitments' %}
+                            <div class="task-item">
+                                <div>
+                                    <div class="task-title {% if todo.completed %}completed{% endif %}">
+                                        {{ todo.task }}
+                                    </div>
+                                    {% if todo.due_date %}
+                                        <div class="task-date">
+                                            {{ todo.due_date.strftime('%b %d, %Y') }}
+                                            {% set days = calculate_days(todo.due_date) %}
+                                            {% if days %}
+                                                <span class="status {% if days == 'Overdue' %}status-overdue{% elif days == 'Due today' %}status-today{% else %}status-upcoming{% endif %}">
+                                                    {{ days }}
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="empty-state">
+                                <i class="fas fa-clipboard-list"></i>
+                                <p>No personal commitments scheduled</p>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        // Add smooth scrolling to all cards
+        document.querySelectorAll('.card-body').forEach(card => {
+            card.style.scrollBehavior = 'smooth';
+        });
+
+        // Add hover effect to task items
+        document.querySelectorAll('.task-item').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                item.style.transform = 'translateX(5px)';
+            });
+            item.addEventListener('mouseleave', () => {
+                item.style.transform = 'translateX(0)';
+            });
+        });
+    </script>
 </body>
 </html>
