@@ -7,12 +7,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #4a90e2;
+            --primary: #6ea0da;
             --secondary: #f39c12;
             --success: #2ecc71;
             --danger: #e74c3c;
             --dark: #2c3e50;
-            --light: #ecf0f1;
+            --light: #a6edff;
             --shadow: rgba(0, 0, 0, 0.1);
         }
 
@@ -24,7 +24,8 @@
         }
 
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: url("{{ url_for('static', filename='limbo.png') }}") no-repeat center center fixed;
+            background-size: cover;
             min-height: 100vh;
         }
 
@@ -286,7 +287,6 @@
                 <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" style="height: 40px;">
             </div>
             <div class="user-actions">
-                <span style="color: #dc143c; font-weight: bold; font-style: italic;">WELCOME BELOVED USER!</span>
                 <a href="{{ url_for('logout') }}" class="btn btn-logout">
                     <i class="fas fa-sign-out-alt"></i>
                     Logout
