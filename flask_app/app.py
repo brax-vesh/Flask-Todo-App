@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from setup_db import User, ToDo, Assessment, StudySession, CoCurricular, PersonalCommitment, Base  # Add Base to imports
 from werkzeug.security import check_password_hash, generate_password_hash
-from datetime import datetime  # Add this import at the top
+from datetime import datetime, date, timedelta  # Add date and timedelta to imports
 
 app = Flask(__name__)
 
@@ -18,6 +18,19 @@ db_session = Session()
 # Create all tables
 Base.metadata.create_all(engine)  # Uncomment this line to create tables
 
+# Add this helper function after the imports
+def calculate_days_remaining(due_date):
+    if not due_date:
+        return None
+    today = date.today()
+    days = (due_date.date() - today).days
+    if days < 0:
+        return "Overdue"
+    elif days == 0:
+        return "Due today"
+    else:
+        return f"{days} days left"
+
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -30,7 +43,7 @@ def dashboard():
 
     user_id = session["user_id"]
     todos = db_session.query(ToDo).filter_by(user_id=user_id).all()
-    return render_template('dashboard.html', todos=todos)
+    return render_template('dashboard.html', todos=todos, calculate_days=calculate_days_remaining)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -189,28 +202,28 @@ def assessments():
     if 'user_id' not in session:
         return redirect(url_for('login'))
     todos = db_session.query(ToDo).filter_by(user_id=session['user_id'], category='Assessments').all()
-    return render_template('assessments.html', todos=todos)
+    return render_template('assessments.html', todos=todos, calculate_days=calculate_days_remaining)
 
 @app.route('/study_sessions')
 def study_sessions():
     if 'user_id' not in session:
         return redirect(url_for('login'))
     todos = db_session.query(ToDo).filter_by(user_id=session['user_id'], category='Study Sessions').all()
-    return render_template('study_sessions.html', todos=todos)
+    return render_template('study_sessions.html', todos=todos, calculate_days=calculate_days_remaining)
 
 @app.route('/co_curricular')
 def co_curricular():
     if 'user_id' not in session:
         return redirect(url_for('login'))
     todos = db_session.query(ToDo).filter_by(user_id=session['user_id'], category='Co-Curricular').all()
-    return render_template('co_curricular.html', todos=todos)
+    return render_template('co_curricular.html', todos=todos, calculate_days=calculate_days_remaining)
 
 @app.route('/personal_commitments')
 def personal_commitments():
     if 'user_id' not in session:
         return redirect(url_for('login'))
     todos = db_session.query(ToDo).filter_by(user_id=session['user_id'], category='Personal Commitments').all()
-    return render_template('personal_commitments.html', todos=todos)
+    return render_template('personal_commitments.html', todos=todos, calculate_days=calculate_days_remaining)
 
 @app.route('/todos')
 def todos():
