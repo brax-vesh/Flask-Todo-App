@@ -1,9 +1,9 @@
 from flask import Flask, render_template, session, flash, redirect, request, url_for
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-# Update imports to include new models
-from setup_db import User, ToDo, Assessment, StudySession, CoCurricular, PersonalCommitment
+from setup_db import User, ToDo, Assessment, StudySession, CoCurricular, PersonalCommitment, Base  # Add Base to imports
 from werkzeug.security import check_password_hash, generate_password_hash
+from datetime import datetime  # Add this import at the top
 
 app = Flask(__name__)
 
@@ -15,8 +15,8 @@ engine = create_engine('sqlite:///todo.db')
 Session = sessionmaker(bind=engine)
 db_session = Session()
 
-# Create the tables
-# Base.metadata.create_all(engine)
+# Create all tables
+Base.metadata.create_all(engine)  # Uncomment this line to create tables
 
 @app.route('/')
 def home():
@@ -92,9 +92,19 @@ def add_todo():
     if request.method == "POST":
         task = request.form.get("task")
         category = request.form.get("category")
+        due_date_str = request.form.get("due_date")
         user_id = session["user_id"]
         
-        new_todo = ToDo(task=task, category=category, user_id=user_id)
+        # Convert date string to datetime object if provided
+        due_date = None
+        if due_date_str:
+            try:
+                due_date = datetime.strptime(due_date_str, '%Y-%m-%d')
+            except ValueError:
+                flash("Invalid date format", "error")
+                return redirect('/add_todo')
+        
+        new_todo = ToDo(task=task, category=category, user_id=user_id, due_date=due_date)
         db_session.add(new_todo)
         db_session.commit()
         
@@ -118,6 +128,17 @@ def update_todo(todo_id):
     if request.method == "POST":
         new_task = request.form.get("new_task")
         new_category = request.form.get("category")
+        due_date_str = request.form.get("due_date")
+        
+        # Convert date string to datetime object if provided
+        if due_date_str:
+            try:
+                todo.due_date = datetime.strptime(due_date_str, '%Y-%m-%d')
+            except ValueError:
+                flash("Invalid date format", "error")
+                return redirect(url_for('update_todo', todo_id=todo_id))
+        else:
+            todo.due_date = None
         
         todo.task = new_task
         todo.category = new_category

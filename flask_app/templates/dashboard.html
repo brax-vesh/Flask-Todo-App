@@ -204,6 +204,10 @@
                                 {% for todo in todos if todo.category == 'Assessments' %}
                                     <div class="todo-preview-item {% if todo.completed %}completed{% endif %}">
                                         {{ todo.task }}
+                                        {% if todo.due_date %}
+                                            <br>
+                                            <small class="text-muted">Due: {{ todo.due_date.strftime('%Y-%m-%d') }}</small>
+                                        {% endif %}
                                     </div>
                                 {% endfor %}
                             </div>
@@ -224,6 +228,10 @@
                                 {% for todo in todos if todo.category == 'Study Sessions' %}
                                     <div class="todo-preview-item {% if todo.completed %}completed{% endif %}">
                                         {{ todo.task }}
+                                        {% if todo.due_date %}
+                                            <br>
+                                            <small class="text-muted">Due: {{ todo.due_date.strftime('%Y-%m-%d') }}</small>
+                                        {% endif %}
                                     </div>
                                 {% endfor %}
                             </div>
@@ -244,6 +252,10 @@
                                 {% for todo in todos if todo.category == 'Co-Curricular Activities' %}
                                     <div class="todo-preview-item {% if todo.completed %}completed{% endif %}">
                                         {{ todo.task }}
+                                        {% if todo.due_date %}
+                                            <br>
+                                            <small class="text-muted">Due: {{ todo.due_date.strftime('%Y-%m-%d') }}</small>
+                                        {% endif %}
                                     </div>
                                 {% endfor %}
                             </div>
@@ -264,6 +276,10 @@
                                 {% for todo in todos if todo.category == 'Personal Commitments' %}
                                     <div class="todo-preview-item {% if todo.completed %}completed{% endif %}">
                                         {{ todo.task }}
+                                        {% if todo.due_date %}
+                                            <br>
+                                            <small class="text-muted">Due: {{ todo.due_date.strftime('%Y-%m-%d') }}</small>
+                                        {% endif %}
                                     </div>
                                 {% endfor %}
                             </div>

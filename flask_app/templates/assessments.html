@@ -20,7 +20,13 @@
                                 <input type="checkbox" class="form-check-input" onchange="this.form.submit()" 
                                        {% if todo.completed %}checked{% endif %}>
                             </form>
-                            <span {% if todo.completed %}class="text-decoration-line-through"{% endif %}>{{ todo.task }}</span>
+                            <div>
+                                <span {% if todo.completed %}class="text-decoration-line-through"{% endif %}>{{ todo.task }}</span>
+                                {% if todo.due_date %}
+                                    <br>
+                                    <small class="text-muted">Due: {{ todo.due_date.strftime('%Y-%m-%d') }}</small>
+                                {% endif %}
+                            </div>
                         </div>
                         <div class="btn-group">
                             <a href="{{ url_for('update_todo', todo_id=todo.id) }}" class="btn btn-sm btn-primary me-2">Update</a>

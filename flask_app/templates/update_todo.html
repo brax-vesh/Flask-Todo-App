@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,6 +27,11 @@
                                     <option value="Co-Curricular" {% if todo.category == 'Co-Curricular' %}selected{% endif %}>Co-Curricular</option>
                                     <option value="Personal Commitments" {% if todo.category == 'Personal Commitments' %}selected{% endif %}>Personal Commitments</option>
                                 </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="due_date" class="form-label">Due Date</label>
+                                <input type="date" class="form-control" id="due_date" name="due_date" 
+                                       value="{{ todo.due_date.strftime('%Y-%m-%d') if todo.due_date else '' }}">
                             </div>
                             <button type="submit" class="btn btn-primary w-100">Update Todo</button>
                         </form>

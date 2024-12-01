@@ -25,6 +25,7 @@ class ToDo(Base):
     task = Column(String, nullable=False)
     category = Column(String, nullable=False)
     completed = Column(Boolean, default=False)
+    due_date = Column(DateTime, nullable=True)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     user = relationship('User', back_populates='todos')
 
