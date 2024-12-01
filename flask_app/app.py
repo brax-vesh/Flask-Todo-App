@@ -24,15 +24,13 @@ def home():
 
 @app.route('/dashboard')
 def dashboard():
-    # Check if the user is logged in
     if "user_id" not in session:
         flash("Please log in to access the dashboard.", "warning")
         return redirect('/login')
-    # Retrieve the user's to-dos from the database
 
     user_id = session["user_id"]
-    user = db_session.query(User).get(user_id)
-    return render_template('dashboard.html', todos=user.todos)
+    todos = db_session.query(ToDo).filter_by(user_id=user_id).all()
+    return render_template('dashboard.html', todos=todos)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -132,15 +130,12 @@ def update_todo(todo_id):
 
 @app.route('/delete_todo/<int:todo_id>', methods=["POST"])
 def delete_todo(todo_id):
-    # Ensure the user is logged in
     if "user_id" not in session:
         flash("Please log in to delete a to-do.", "warning")
         return redirect('/login')
     
-    # Query the database for the to-do and delete it
     todo = db_session.query(ToDo).get(todo_id)
     
-    # Ensure the to-do exists and belongs to the logged-in user
     if todo and todo.user_id == session["user_id"]:
         db_session.delete(todo)
         db_session.commit()
@@ -148,7 +143,8 @@ def delete_todo(todo_id):
     else:
         flash("To-Do not found or access denied.", "danger")
     
-    return redirect('/dashboard')
+    # Return to the previous page using request.referrer
+    return redirect(request.referrer or '/dashboard')
 
 @app.route('/toggle_todo/<int:todo_id>', methods=["POST"])
 def toggle_todo(todo_id):

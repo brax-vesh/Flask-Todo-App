@@ -36,6 +36,9 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             margin-bottom: 2rem;
             overflow: hidden;
+            height: 300px; /* Set fixed height for all cards */
+            display: flex;
+            flex-direction: column;
         }
 
         .hub-card:hover {
@@ -53,6 +56,10 @@
         .hub-card-body {
             padding: 1.5rem;
             color: #666;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden; /* Prevent content from expanding card */
         }
 
         .hub-card-link {
@@ -132,6 +139,47 @@
             margin-bottom: 1rem;
             color: #666;
         }
+
+        .todo-preview {
+            margin-top: 1rem;
+            flex: 1; /* Take remaining space */
+            overflow-y: auto;
+            border-top: 1px solid #eee;
+            padding-top: 0.5rem;
+        }
+
+        .todo-preview-item {
+            padding: 0.5rem;
+            margin-bottom: 0.25rem;
+            background: #f8f9fa;
+            border-radius: 3px;
+            font-size: 0.9rem;
+        }
+
+        .todo-preview-item.completed {
+            text-decoration: line-through;
+            color: #888;
+            background: #e8f5e9;
+        }
+
+        /* Scrollbar styling */
+        .todo-preview::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .todo-preview::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .todo-preview::-webkit-scrollbar-thumb {
+            background: var(--secondary-color);
+            border-radius: 3px;
+        }
+
+        /* For the Add Todo and All Tasks cards that don't need the full height */
+        .center-card {
+            height: 200px;
+        }
     </style>
 </head>
 <body>
@@ -151,7 +199,14 @@
                             Assessments
                         </div>
                         <div class="hub-card-body">
-                            Track your upcoming assignments, tests, and examinations.
+                            <p>Track your upcoming assignments, tests, and examinations.</p>
+                            <div class="todo-preview">
+                                {% for todo in todos if todo.category == 'Assessments' %}
+                                    <div class="todo-preview-item {% if todo.completed %}completed{% endif %}">
+                                        {{ todo.task }}
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </a>
@@ -164,7 +219,14 @@
                             Study Sessions
                         </div>
                         <div class="hub-card-body">
-                            Plan and organize your study schedule and revision tasks.
+                            <p>Plan and organize your study schedule and revision tasks.</p>
+                            <div class="todo-preview">
+                                {% for todo in todos if todo.category == 'Study Sessions' %}
+                                    <div class="todo-preview-item {% if todo.completed %}completed{% endif %}">
+                                        {{ todo.task }}
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </a>
@@ -177,7 +239,14 @@
                             Co-Curricular Activities
                         </div>
                         <div class="hub-card-body">
-                            Manage your sports, clubs, and extra-curricular commitments.
+                            <p>Manage your sports, clubs, and extra-curricular commitments.</p>
+                            <div class="todo-preview">
+                                {% for todo in todos if todo.category == 'Co-Curricular Activities' %}
+                                    <div class="todo-preview-item {% if todo.completed %}completed{% endif %}">
+                                        {{ todo.task }}
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </a>
@@ -190,7 +259,14 @@
                             Personal Commitments
                         </div>
                         <div class="hub-card-body">
-                            Keep track of personal tasks and appointments.
+                            <p>Keep track of personal tasks and appointments.</p>
+                            <div class="todo-preview">
+                                {% for todo in todos if todo.category == 'Personal Commitments' %}
+                                    <div class="todo-preview-item {% if todo.completed %}completed{% endif %}">
+                                        {{ todo.task }}
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </a>
@@ -199,7 +275,7 @@
             <div class="col-12 d-flex justify-content-center">
                 <div class="col-md-6">
                     <a href="{{ url_for('todos') }}" class="hub-card-link">
-                        <div class="hub-card">
+                        <div class="hub-card center-card">
                             <div class="hub-card-header">
                                 Add Todo
                             </div>
@@ -214,7 +290,7 @@
             <div class="col-12 d-flex justify-content-center">
                 <div class="col-md-6">
                     <a href="{{ url_for('all_todos') }}" class="hub-card-link">
-                        <div class="hub-card">
+                        <div class="hub-card center-card">
                             <div class="hub-card-header">
                                 All Tasks
                             </div>
