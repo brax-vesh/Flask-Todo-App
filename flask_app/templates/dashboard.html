@@ -315,31 +315,34 @@
                 </div>
                 <div class="card-body">
                     <div class="task-list">
-                        {% for todo in todos if todo.category == 'Assessments' %}
-                            <div class="task-item">
-                                <div>
-                                    <div class="task-title {% if todo.completed %}completed{% endif %}">
-                                        {{ todo.task }}
-                                    </div>
-                                    {% if todo.due_date %}
-                                        <div class="task-date">
-                                            {{ todo.due_date.strftime('%b %d, %Y') }}
-                                            {% set days = calculate_days(todo.due_date) %}
-                                            {% if days %}
-                                                <span class="status {% if days == 'Overdue' %}status-overdue{% elif days == 'Due today' %}status-today{% else %}status-upcoming{% endif %}">
-                                                    {{ days }}
-                                                </span>
-                                            {% endif %}
+                        {% set assessment_todos = todos|selectattr('category', 'equalto', 'Assessments')|list %}
+                        {% if assessment_todos %}
+                            {% for todo in assessment_todos %}
+                                <div class="task-item">
+                                    <div>
+                                        <div class="task-title {% if todo.completed %}completed{% endif %}">
+                                            {{ todo.task }}
                                         </div>
-                                    {% endif %}
+                                        {% if todo.due_date %}
+                                            <div class="task-date">
+                                                {{ todo.due_date.strftime('%b %d, %Y') }}
+                                                {% set days = calculate_days(todo.due_date) %}
+                                                {% if days %}
+                                                    <span class="status {% if days == 'Overdue' %}status-overdue{% elif days == 'Due today' %}status-today{% else %}status-upcoming{% endif %}">
+                                                        {{ days }}
+                                                    </span>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
                                 </div>
-                            </div>
+                            {% endfor %}
                         {% else %}
                             <div class="empty-state">
                                 <i class="fas fa-clipboard-list"></i>
                                 <p>No assessments scheduled</p>
                             </div>
-                        {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -354,31 +357,34 @@
                 </div>
                 <div class="card-body">
                     <div class="task-list">
-                        {% for todo in todos if todo.category == 'Study Sessions' %}
-                            <div class="task-item">
-                                <div>
-                                    <div class="task-title {% if todo.completed %}completed{% endif %}">
-                                        {{ todo.task }}
-                                    </div>
-                                    {% if todo.due_date %}
-                                        <div class="task-date">
-                                            {{ todo.due_date.strftime('%b %d, %Y') }}
-                                            {% set days = calculate_days(todo.due_date) %}
-                                            {% if days %}
-                                                <span class="status {% if days == 'Overdue' %}status-overdue{% elif days == 'Due today' %}status-today{% else %}status-upcoming{% endif %}">
-                                                    {{ days }}
-                                                </span>
-                                            {% endif %}
+                        {% set study_todos = todos|selectattr('category', 'equalto', 'Study Sessions')|list %}
+                        {% if study_todos %}
+                            {% for todo in study_todos %}
+                                <div class="task-item">
+                                    <div>
+                                        <div class="task-title {% if todo.completed %}completed{% endif %}">
+                                            {{ todo.task }}
                                         </div>
-                                    {% endif %}
+                                        {% if todo.due_date %}
+                                            <div class="task-date">
+                                                {{ todo.due_date.strftime('%b %d, %Y') }}
+                                                {% set days = calculate_days(todo.due_date) %}
+                                                {% if days %}
+                                                    <span class="status {% if days == 'Overdue' %}status-overdue{% elif days == 'Due today' %}status-today{% else %}status-upcoming{% endif %}">
+                                                        {{ days }}
+                                                    </span>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
                                 </div>
-                            </div>
+                            {% endfor %}
                         {% else %}
                             <div class="empty-state">
                                 <i class="fas fa-clipboard-list"></i>
                                 <p>No study sessions scheduled</p>
                             </div>
-                        {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -393,31 +399,34 @@
                 </div>
                 <div class="card-body">
                     <div class="task-list">
-                        {% for todo in todos if todo.category == 'Co-Curricular Activities' %}
-                            <div class="task-item">
-                                <div>
-                                    <div class="task-title {% if todo.completed %}completed{% endif %}">
-                                        {{ todo.task }}
-                                    </div>
-                                    {% if todo.due_date %}
-                                        <div class="task-date">
-                                            {{ todo.due_date.strftime('%b %d, %Y') }}
-                                            {% set days = calculate_days(todo.due_date) %}
-                                            {% if days %}
-                                                <span class="status {% if days == 'Overdue' %}status-overdue{% elif days == 'Due today' %}status-today{% else %}status-upcoming{% endif %}">
-                                                    {{ days }}
-                                                </span>
-                                            {% endif %}
+                        {% set cocurricular_todos = todos|selectattr('category', 'equalto', 'Co-Curricular')|list %}
+                        {% if cocurricular_todos %}
+                            {% for todo in cocurricular_todos %}
+                                <div class="task-item">
+                                    <div>
+                                        <div class="task-title {% if todo.completed %}completed{% endif %}">
+                                            {{ todo.task }}
                                         </div>
-                                    {% endif %}
+                                        {% if todo.due_date %}
+                                            <div class="task-date">
+                                                {{ todo.due_date.strftime('%b %d, %Y') }}
+                                                {% set days = calculate_days(todo.due_date) %}
+                                                {% if days %}
+                                                    <span class="status {% if days == 'Overdue' %}status-overdue{% elif days == 'Due today' %}status-today{% else %}status-upcoming{% endif %}">
+                                                        {{ days }}
+                                                    </span>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
                                 </div>
-                            </div>
+                            {% endfor %}
                         {% else %}
                             <div class="empty-state">
                                 <i class="fas fa-clipboard-list"></i>
                                 <p>No co-curricular activities scheduled</p>
                             </div>
-                        {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -432,31 +441,34 @@
                 </div>
                 <div class="card-body">
                     <div class="task-list">
-                        {% for todo in todos if todo.category == 'Personal Commitments' %}
-                            <div class="task-item">
-                                <div>
-                                    <div class="task-title {% if todo.completed %}completed{% endif %}">
-                                        {{ todo.task }}
-                                    </div>
-                                    {% if todo.due_date %}
-                                        <div class="task-date">
-                                            {{ todo.due_date.strftime('%b %d, %Y') }}
-                                            {% set days = calculate_days(todo.due_date) %}
-                                            {% if days %}
-                                                <span class="status {% if days == 'Overdue' %}status-overdue{% elif days == 'Due today' %}status-today{% else %}status-upcoming{% endif %}">
-                                                    {{ days }}
-                                                </span>
-                                            {% endif %}
+                        {% set personal_todos = todos|selectattr('category', 'equalto', 'Personal Commitments')|list %}
+                        {% if personal_todos %}
+                            {% for todo in personal_todos %}
+                                <div class="task-item">
+                                    <div>
+                                        <div class="task-title {% if todo.completed %}completed{% endif %}">
+                                            {{ todo.task }}
                                         </div>
-                                    {% endif %}
+                                        {% if todo.due_date %}
+                                            <div class="task-date">
+                                                {{ todo.due_date.strftime('%b %d, %Y') }}
+                                                {% set days = calculate_days(todo.due_date) %}
+                                                {% if days %}
+                                                    <span class="status {% if days == 'Overdue' %}status-overdue{% elif days == 'Due today' %}status-today{% else %}status-upcoming{% endif %}">
+                                                        {{ days }}
+                                                    </span>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
                                 </div>
-                            </div>
+                            {% endfor %}
                         {% else %}
                             <div class="empty-state">
                                 <i class="fas fa-clipboard-list"></i>
                                 <p>No personal commitments scheduled</p>
                             </div>
-                        {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
             </div>
