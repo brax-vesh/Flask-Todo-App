@@ -184,6 +184,28 @@
             width: auto;
             filter: drop-shadow(0 0 5px rgba(255, 72, 0, 0.3));
         }
+
+        .ultra-highlight {
+            color: #ff3333; /* Brighter red */
+            font-weight: 900;
+            text-shadow: 0 0 5px rgba(255, 51, 51, 0.7),
+                         0 0 10px rgba(255, 51, 51, 0.5),
+                         0 0 15px rgba(255, 51, 51, 0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px rgba(255, 51, 51, 0.7),
+                            0 0 10px rgba(255, 51, 51, 0.5),
+                            0 0 15px rgba(255, 51, 51, 0.3);
+            }
+            to {
+                text-shadow: 0 0 10px rgba(255, 51, 51, 0.9),
+                            0 0 20px rgba(255, 51, 51, 0.7),
+                            0 0 30px rgba(255, 51, 51, 0.5);
+            }
+        }
     </style>
 </head>
 <body>
@@ -203,8 +225,8 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6" data-aos="fade-right">
-                    <h1 class="display-5 fw-bold mb-4">ULTRA-Organize Your Busy Life</h1>
-                    <p class="lead mb-4">With Ultralist, you'll be able to EASILY categorise all your tasks, personal or school related</p>
+                    <h1 class="display-5 fw-bold mb-4"><span class="ultra-highlight">ULTRA</span>-Organize Your Busy Life</h1>
+                    <p class="lead mb-4">With <span class="ultra-highlight">ULTRALIST</span>, you'll be able to EASILY categorise all your tasks, personal or school related</p>
                     <a href="{{ url_for('signup') }}" class="btn btn-light btn-lg">REGISTER</a>
                 </div>
                 <div class="col-lg-6" data-aos="fade-left">
@@ -217,7 +239,7 @@
     <section class="py-5">
         <div class="container">
             <div class="text-center mb-5" data-aos="fade-up">
-                <img src="{{ url_for('static', filename='reason.png') }}" alt="Why Choose Us" class="img-fluid" style="max-height: 225px;">
+                <h2 class="display-4 mb-4">WHY CHOOSE US</h2>
             </div>
             <div class="row g-4">
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
@@ -227,7 +249,7 @@
                                 <img src="{{ url_for('static', filename='neverforget.png') }}" alt="Never Forget" class="img-fluid mb-3" style="max-height: 80px;">
                             </div>
                             <h5 class="card-title">NEVER FORGET ABOUT ASSESSMENTS</h5>
-                            <p class="card-text">Never miss a DEADLINE, with our countdown system</p>
+                            <p class="card-text">Never miss a <span class="ultra-highlight">DEADLINE</span>, with our countdown system</p>
                         </div>
                     </div>
                 </div>
@@ -238,7 +260,7 @@
                                 <img src="{{ url_for('static', filename='study.png') }}" alt="Study Sessions" class="img-fluid mb-3" style="max-height: 80px;">
                             </div>
                             <h5 class="card-title">ALWAYS HAVE STUDY SESSIONS</h5>
-                            <p class="card-text">ULTRA-Optimize your study time by motivating yourself to study with DEADLINES</p>
+                            <p class="card-text"><span class="ultra-highlight">ULTRA</span>-Optimize your study time by motivating yourself to study with <span class="ultra-highlight">DEADLINES</span></p>
                         </div>
                     </div>
                 </div>
@@ -249,7 +271,7 @@
                                 <img src="{{ url_for('static', filename='time.png') }}" alt="Time Management" class="img-fluid mb-3" style="max-height: 80px;">
                             </div>
                             <h5 class="card-title">MAKE TIME FOR CO-CURRICULAR ACTIVITIES</h5>
-                            <p class="card-text">Balance academics and extracurriculars with ease.</p>
+                            <p class="card-text">Balance academics and extracurriculars and <span class="ultra-highlight">KILL IT</span> at school with ease.</p>
                         </div>
                     </div>
                 </div>
