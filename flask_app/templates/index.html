@@ -22,7 +22,7 @@
         body {
             font-family: 'Share Tech Mono', monospace;
             overflow-x: hidden;
-            background-color: var(--dark-color);
+            background-color: black;
             color: var(--blood-orange);
         }
 
@@ -51,6 +51,13 @@
             color: var(--blood-orange);
         }
 
+        .gradient-text {
+            background: linear-gradient(45deg, #ff4800, #ff0066);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: none;
+        }
+
         .card-title {
             font-family: 'Orbitron', sans-serif;
             font-weight: 700;
@@ -65,12 +72,13 @@
             font-family: 'Orbitron', sans-serif;
             font-weight: 900;
             letter-spacing: 4px;
-            -webkit-text-stroke: 2px white;
-            text-shadow: 0 0 10px rgba(255, 255, 0, 0.9),
-                         0 0 20px rgba(255, 255, 0, 0.8),
-                         0 0 30px rgba(255, 255, 0, 0.7),
-                         0 0 40px rgba(255, 255, 0, 0.6),
-                         0 0 50px rgba(255, 255, 0, 0.4);
+            -webkit-text-stroke: 2px #E6B8FF;
+            text-shadow: 0 0 10px rgba(230, 184, 255, 0.5),
+                         0 0 20px rgba(230, 184, 255, 0.45),
+                         0 0 30px rgba(230, 184, 255, 0.4),
+                         0 0 40px rgba(230, 184, 255, 0.35),
+                         0 0 50px rgba(230, 184, 255, 0.3),
+                         0 0 60px rgba(230, 184, 255, 0.25);
         }
 
         .navbar-brand {
@@ -80,17 +88,22 @@
 
         .hero-section {
             min-height: 100vh;
-            background: var(--dark-color);
-            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
-                            repeating-linear-gradient(45deg, 
-                            rgba(128,0,0,0.1) 0px, 
-                            rgba(128,0,0,0.1) 2px,
-                            transparent 2px, 
-                            transparent 4px);
-            color: white;
+            background: linear-gradient(
+                to bottom,
+                transparent 0%,
+                rgba(0, 0, 0, 0.7) 70%,
+                black 100%
+            ), url("{{ url_for('static', filename='violence_layer_skybox.png') }}");
+            background-size: cover;
+            background-position: center top;
             position: relative;
+            overflow: hidden;
         }
 
+        /* Remove or comment out the ::before pseudo-element since we're using an image */
+        /* .hero-section::before { ... } */
+
+        /* Keep the existing ::after pseudo-element for the bottom diagonal transition */
         .hero-section::after {
             content: '';
             position: absolute;
@@ -98,7 +111,7 @@
             left: 0;
             right: 0;
             height: 150px;
-            background: linear-gradient(to bottom right, transparent 49%, var(--dark-color) 51%);
+            background: linear-gradient(to bottom right, transparent 49%, black 51%);
         }
 
         .navbar {
@@ -133,7 +146,7 @@
         }
 
         .stats-section {
-            background-color: var(--dark-color);
+            background-color: black;
             border-top: 2px solid var(--accent-color);
             border-bottom: 2px solid var(--accent-color);
             color: white;
@@ -141,9 +154,9 @@
 
         .stats-section p {
             color: white !important;
-            text-shadow: 0 0 5px rgba(255, 255, 0, 0.8),
-                         0 0 10px rgba(255, 255, 0, 0.6),
-                         0 0 15px rgba(255, 255, 0, 0.4);
+            text-shadow: 0 0 5px rgba(230, 184, 255, 0.45),
+                         0 0 10px rgba(230, 184, 255, 0.4),
+                         0 0 15px rgba(230, 184, 255, 0.35);
         }
 
         footer {
@@ -206,6 +219,54 @@
                             0 0 30px rgba(255, 51, 51, 0.5);
             }
         }
+
+        .feature-list {
+            margin-left: 0;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .feature-list li {
+            margin: 12px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .feature-list li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--blood-orange);
+        }
+
+        .highlight-word {
+            color: var(--blood-orange);
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .shimmer-text {
+            background: linear-gradient(
+                90deg,
+                #ff4800 0%,
+                #ff0066 25%,
+                #ff4800 50%,
+                #ff0066 75%,
+                #ff4800 100%
+            );
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+            text-shadow: none;
+            font-weight: bold;
+        }
+
+        @keyframes shimmer {
+            to {
+                background-position: 200% center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -226,7 +287,9 @@
             <div class="row align-items-center">
                 <div class="col-lg-6" data-aos="fade-right">
                     <h1 class="display-5 fw-bold mb-4"><span class="ultra-highlight">ULTRA</span>-Organize Your Busy Life</h1>
-                    <p class="lead mb-4">With <span class="ultra-highlight">ULTRALIST</span>, you'll be able to EASILY categorise all your tasks, personal or school related</p>
+                    <div class="lead mb-4 shimmer-text">
+                        With <span class="ultra-highlight">ULTRALIST</span>, you'll be able to <span class="highlight-word">EASILY</span> categorize all your tasks, personal or school related.
+                    </div>
                     <a href="{{ url_for('signup') }}" class="btn btn-light btn-lg">REGISTER</a>
                 </div>
                 <div class="col-lg-6" data-aos="fade-left">
@@ -283,22 +346,22 @@
         <div class="container">
             <div class="row text-center justify-content-around align-items-center">
                 <div class="col-md-3" data-aos="fade-up">
-                    <div class="stat-number display-4" style="color: white;">99999+</div>
-                    <p class="mt-2" style="color: white;"> USERS ON OUR SITE</p>
+                    <div class="stat-number display-4" style="color: rgba(230, 184, 255, 0.6);">99999+</div>
+                    <p class="mt-2" style="color: rgba(230, 184, 255, 0.6);"> USERS ON OUR SITE</p>
                 </div>
                 <div class="col-md-3" data-aos="fade-up" data-aos-delay="100">
-                    <div class="stat-number display-4" style="color: white;">99999+</div>
-                    <p class="mt-2" style="color: white;">SUCCESSFULLY EXECUTED TASKS</p>
+                    <div class="stat-number display-4" style="color: rgba(230, 184, 255, 0.6);">99999+</div>
+                    <p class="mt-2" style="color: rgba(230, 184, 255, 0.6);">SUCCESSFULLY EXECUTED TASKS</p>
                 </div>
                 <div class="col-md-3" data-aos="fade-up" data-aos-delay="200">
-                    <div class="stat-number display-4" style="color: white;">100%</div>
-                    <p class="mt-2" style="color: white;">SATISFACTION</p>
+                    <div class="stat-number display-4" style="color: rgba(230, 184, 255, 0.6);">100%</div>
+                    <p class="mt-2" style="color: rgba(230, 184, 255, 0.6);">SATISFACTION</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="bg-dark text-light py-4">
+    <footer class="bg-black text-light py-4">
         <div class="container text-center">
             <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="footer-logo">
         </div>
