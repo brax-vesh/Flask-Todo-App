@@ -31,6 +31,23 @@ def calculate_days_remaining(due_date):
     else:
         return f"{days} days left"
 
+def calculate_days(due_date):
+    if not due_date:
+        return None
+    
+    today = datetime.now().date()
+    days_remaining = (due_date.date() - today).days
+    
+    if days_remaining < 0:
+        return 'Overdue'
+    elif days_remaining == 0:
+        return 'Due today'
+    else:
+        return f'{days_remaining} days left'
+
+# Register the function as a template filter
+app.jinja_env.globals['calculate_days'] = calculate_days
+
 @app.route('/')
 def home():
     return render_template('index.html')

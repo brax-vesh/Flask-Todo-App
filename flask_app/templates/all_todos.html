@@ -57,11 +57,25 @@
                             <div>
                                 <span {% if todo.completed %}class="text-decoration-line-through"{% endif %}>{{ todo.task }}</span>
                                 <small class="text-muted d-block">Category: {{ todo.category }}</small>
+                                {% if todo.due_date %}
+                                    <small class="text-muted">
+                                        Due: {{ todo.due_date.strftime('%Y-%m-%d') }}
+                                        {% set days = calculate_days(todo.due_date) %}
+                                        {% if days %}
+                                            • <span class="{% if days == 'Overdue' %}text-danger{% elif days == 'Due today' %}text-warning{% else %}text-info{% endif %}">
+                                                {{ days }}
+                                            </span>
+                                        {% endif %}
+                                    </small>
+                                {% endif %}
                             </div>
                         </div>
-                        <form action="{{ url_for('delete_todo', todo_id=todo.id) }}" method="POST" class="d-inline">
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                        </form>
+                        <div class="btn-group">
+                            <a href="{{ url_for('update_todo', todo_id=todo.id) }}" class="btn btn-sm btn-primary me-2">Update</a>
+                            <form action="{{ url_for('delete_todo', todo_id=todo.id) }}" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </div>
                     </li>
                     {% endfor %}
                 </ul>
