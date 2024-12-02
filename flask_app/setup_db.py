@@ -5,6 +5,16 @@ from werkzeug.security import check_password_hash
 
 Base = declarative_base()
 
+"""
+Represents user accounts in the database
+allows username and password storage for user
+includes password verification functionality
+
+id: key used for user identification
+username is a uniqe string that acts as the users account name
+password is a hashed string used for authentication
+todos: the users created todos
+"""
 class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
@@ -25,6 +35,6 @@ class ToDo(Base):
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     user = relationship('User', back_populates='todos')
 
-# Database setup
+# Database setup using sqlite, creates database table
 engine = create_engine('sqlite:///todo.db')
 Base.metadata.create_all(engine)

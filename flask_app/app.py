@@ -11,14 +11,18 @@ app.secret_key = "supersecretkey"
 # Replace with a secure, random key in production
 
 # Create the engine and session
+
+#establishes connection to database
 engine = create_engine('sqlite:///todo.db')
+
+#session allows user to interact with the database
 Session = sessionmaker(bind=engine)
 db_session = Session()
 
 # Create all tables
 Base.metadata.create_all(engine)  # Uncomment this line to create tables
 
-# Add this helper function after the imports
+# Function to calculate days remaining, used on dashbaord and category pages
 def calculate_days_remaining(due_date):
     if not due_date:
         return None
@@ -48,10 +52,12 @@ def calculate_days(due_date):
 # Register the function as a template filter
 app.jinja_env.globals['calculate_days'] = calculate_days
 
+#home page - allows user to choos to login or signup
 @app.route('/')
 def home():
     return render_template('index.html')
 
+#after user has logged in, they will be redirected to the dashboard, only able to be reached if logged in
 @app.route('/dashboard')
 def dashboard():
     if "user_id" not in session:
@@ -62,6 +68,7 @@ def dashboard():
     todos = db_session.query(ToDo).filter_by(user_id=user_id).all()
     return render_template('dashboard.html', todos=todos, calculate_days=calculate_days_remaining)
 
+#Posts the entered username and password to the database, if the username and password match, the user is logged in
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == "POST":
@@ -78,6 +85,9 @@ def login():
             print("Invalid username or password", "danger")
     return render_template('login.html')
 
+#how the user creates an account, if the username already exists, the user will be told to try again
+#posts the username and password to the database
+#redirects to login page after account is created so user can login using new credentials
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
@@ -107,12 +117,15 @@ def signup():
 
     return render_template('signup.html')
 
+# removes user id from the session, logging them out of their acc, and redirects them to the home page
 @app.route('/logout')
 def logout():
     session.pop("user_id", None)
     flash("You have been logged out.", "info")
     return redirect('/')
 
+#allows user to add a to-do, if user is not logged in, they will be told to log in
+#posts user entered data from add_todo field to database under their user id
 @app.route('/add_todo', methods=["GET", "POST"])
 def add_todo():
     if "user_id" not in session:
@@ -145,6 +158,9 @@ def add_todo():
     default_category = request.args.get('category', '')
     return render_template('add_todo.html', default_category=default_category)
 
+#allows user to update a to-do, if user is not logged in, they will be told to log in
+#posts user entered data from update_todo field to database 
+# new data replaces old data of the todo they selected to update
 @app.route('/update_todo/<int:todo_id>', methods=["GET", "POST"])
 def update_todo(todo_id):
     if "user_id" not in session:
@@ -181,6 +197,8 @@ def update_todo(todo_id):
     
     return render_template('update_todo.html', todo=todo)
 
+#allows user to delete a to-do, if user is not logged in, they will be told to log in
+#just removes the selected to-do from the database
 @app.route('/delete_todo/<int:todo_id>', methods=["POST"])
 def delete_todo(todo_id):
     if "user_id" not in session:
@@ -199,6 +217,10 @@ def delete_todo(todo_id):
     # Return to the previous page using request.referrer
     return redirect(request.referrer or '/dashboard')
 
+#allows user to toggle a to-do, if user is not logged in, they will be told to log in
+#changes the status of the selected to-do from completed to not completed or vice versa
+# will not remove the todo just displays it as completed, crossed off the list
+
 @app.route('/toggle_todo/<int:todo_id>', methods=["POST"])
 def toggle_todo(todo_id):
     if "user_id" not in session:
@@ -215,6 +237,9 @@ def toggle_todo(todo_id):
         flash("To-Do not found or access denied.", "danger")
     
     return redirect(request.referrer or '/dashboard')
+
+#allows user to view all to-dos categorised in assessment category
+#only able to be reached if logged in
 
 @app.route('/assessments')
 def assessments():
@@ -244,6 +269,7 @@ def personal_commitments():
     todos = db_session.query(ToDo).filter_by(user_id=session['user_id'], category='Personal Commitments').all()
     return render_template('personal_commitments.html', todos=todos, calculate_days=calculate_days_remaining)
 
+#renders the add todo page, which allows users to add a to-do to their data base
 @app.route('/todos')
 def todos():
     if "user_id" not in session:
@@ -254,6 +280,7 @@ def todos():
     user_todos = db_session.query(ToDo).filter_by(user_id=user_id).all()
     return render_template('add_todo.html', todos=user_todos)
 
+#renders the all todos page, which allows users to view all of their to-dos in one page
 @app.route('/all_todos')
 def all_todos():
     if "user_id" not in session:
