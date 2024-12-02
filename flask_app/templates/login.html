@@ -15,7 +15,9 @@
             }
 
             body {
-                background-color: #2a2a2a;  /* Explicitly setting background color */
+                background: linear-gradient(rgba(20, 20, 20, 0.8), rgba(20, 20, 20, 0.8)),
+                            url("{{ url_for('static', filename='admin.png') }}") no-repeat center center fixed;
+                background-size: cover;
                 font-family: 'Share Tech Mono', monospace;
                 color: var(--blood-orange);
             }
