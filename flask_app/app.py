@@ -1,7 +1,7 @@
 from flask import Flask, render_template, session, flash, redirect, request, url_for
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from setup_db import User, ToDo, Assessment, StudySession, CoCurricular, PersonalCommitment, Base  # Add Base to imports
+from setup_db import User, ToDo, Base  # Add Base to imports
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime, date, timedelta  # Add date and timedelta to imports
 
