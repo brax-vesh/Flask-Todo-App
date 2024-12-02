@@ -141,7 +141,9 @@ def add_todo():
         flash("To-Do added successfully!", "success")
         return redirect(url_for(category.lower().replace('-', '_').replace(' ', '_')))
     
-    return render_template('add_todo.html')
+    # Get the category from URL parameter
+    default_category = request.args.get('category', '')
+    return render_template('add_todo.html', default_category=default_category)
 
 @app.route('/update_todo/<int:todo_id>', methods=["GET", "POST"])
 def update_todo(todo_id):

@@ -46,11 +46,11 @@
             <div class="mb-3">
                 <label for="category" class="form-label">Category</label>
                 <select class="form-select" id="category" name="category" required>
-                    <option value="" disabled selected>Select a category</option>
-                    <option value="Personal Commitments">Personal Commitments</option>
-                    <option value="Assessments">Assessments</option>
-                    <option value="Co-Curricular">Co-Curricular</option>
-                    <option value="Study Sessions">Study Sessions</option>
+                    <option value="" disabled {% if not default_category %}selected{% endif %}>Select a category</option>
+                    <option value="Personal Commitments" {% if default_category == 'Personal Commitments' %}selected{% endif %}>Personal Commitments</option>
+                    <option value="Assessments" {% if default_category == 'Assessments' %}selected{% endif %}>Assessments</option>
+                    <option value="Co-Curricular" {% if default_category == 'Co-Curricular' %}selected{% endif %}>Co-Curricular</option>
+                    <option value="Study Sessions" {% if default_category == 'Study Sessions' %}selected{% endif %}>Study Sessions</option>
                 </select>
             </div>
             <div class="mb-3">
